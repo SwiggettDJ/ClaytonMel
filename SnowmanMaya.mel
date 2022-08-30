@@ -1,0 +1,68 @@
+//create base
+polySphere -radius 3 -subdivisionsX 20 -subdivisionsY 20 -axis 0 1 0 -createUVs 2 -constructionHistory 1;
+move -relative 0 3 0;
+
+//create middle
+polySphere -radius 2 -subdivisionsX 20 -subdivisionsY 20 -axis 0 1 0 -createUVs 2 -constructionHistory 1;
+move -relative 0 7 0;
+
+//create head
+polySphere -radius 1.5 -subdivisionsX 20 -subdivisionsY 20 -axis 0 1 0 -createUVs 2 -constructionHistory 1;
+move -relative 0 10 0;
+
+select -r pSphere2 ;
+duplicate -rr;
+scale -r 0.15 0.15 0.05 ;
+move -r 0 0 1.986703 ;
+
+duplicate -rr;
+move -r 0 0.968112 -0.190773 ;
+rotate -r -ws -fo -25.253729 0 0 ;
+
+select -r pSphere4 ;
+duplicate -rr;
+move -r 0 -0.968112 -0.190773 ;
+rotate -r -ws -fo 25.253729 0 0 ;
+
+polyCone -r .5 -h 2 -sx 20 -sy 1 -sz 0 -ax 0 1 0 -rcp 0 -cuv 3 -ch 1;
+move -r 0 10.078562 1.485208 ;
+rotate -r -ws -fo 90 0 0 ;
+
+polySphere -r 1 -sx 20 -sy 20 -ax 0 1 0 -cuv 2 -ch 1;
+move -r 0 10.400869 1.443712 ;
+scale -r 0.276272 0.276272 0.276272 ;
+scale -r 1 1 0.571302 ;
+scale -r 1 1 0.779429 ;
+move -r -0.663711 0 0 ;
+move -r 0 0 -0.199922 ;
+rotate -r -ws -fo 0 -14.4 0 ;
+rotate -r -ws -fo -11.70408 0 0 ;
+select -r pSphere7.vtx[353] ;
+move -r 0.0308095 -0.149129 0 ;
+
+select -r pSphere7 ;
+duplicate -rr;
+move -r 1.38934 0 0 ;
+rotate -r -ws -fo 0 44.42328 0 ;
+rotate -r -ws -fo 0 0 -26.165099 ;
+
+polyCylinder -r 0.2 -h 4 -sx 20 -sy 6 -sz 1 -ax 0 1 0 -rcp 0 -cuv 3 -ch 1;
+move -r 2.490934 7.276071 0 ;
+rotate -r -ws -fo 0 0 55.983054 ;
+move -r 0 -0.509873 0 ;
+
+duplicate -rr;
+move -r -5.327878 1.743385 0.878103 ;
+rotate -r -ws -fo 0 19.553475 21.997601 ;
+
+polyCylinder -r 1 -h 2 -sx 20 -sy 1 -sz 1 -ax 0 1 0 -rcp 0 -cuv 3 -ch 1;
+move -r -0.789613 12.622588 0 ;
+rotate -r -ws -fo 0 0 16.788201 ;
+selectMode -component ;
+select -r pCylinder3.f[20:39] ;
+polyExtrudeFacet -constructionHistory 1 -keepFacesTogether 1 -pvx -0.5007784655 -pvy 11.66520897 -pvz -1.788139343e-07 -divisions 1 -twist 0 -taper 1 -off 0 -thickness 0 -smoothingAngle 30 pCylinder3.f[20:39];
+setAttr "polyExtrudeFace1.localTranslate" -type double3 0 0 0.424859 ;
+select -add pCylinder3.f[60:79] ;
+polyExtrudeFacet -constructionHistory 1 -keepFacesTogether 1 -pvx -0.4394211734 -pvy 11.46183349 -pvz -1.788139343e-07 -divisions 1 -twist 0 -taper 1 -off 0 -thickness 0 -smoothingAngle 30 pCylinder3.f[60:79];
+setAttr "polyExtrudeFace2.localTranslateZ" 0.8;
+setAttr "polyExtrudeFace2.offset" 0.1;
