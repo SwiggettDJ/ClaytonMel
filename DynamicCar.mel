@@ -1,0 +1,19 @@
+float $carSize = 1;
+float $wheelSize = 1;
+
+$carSize *= 4;
+polyCube -width ($carSize* 2) -height $carSize -depth $carSize -subdivisionsX 1 -subdivisionsY 1 -subdivisionsZ 1 -axis 0 1 0 -createUVs 4 -constructionHistory 1;
+move -relative 0 (($carSize * .5) + $wheelSize) 0;
+
+polyTorus -radius $wheelSize -sectionRadius ($wheelSize*.5) -subdivisionsX 20 -subdivisionsY 20 -axis 0 1 0 -createUVs 1 -constructionHistory 1;
+rotate -relative -objectSpace -forceOrderXYZ 90 0 0;
+move -relative ($carSize*.6) ($wheelSize*1.5) ($carSize*.5);
+
+duplicate -returnRootsOnly;
+move -relative 0 0 (-$carSize);
+
+duplicate -returnRootsOnly;
+move -relative (-$carSize*1.2) 0 0;
+
+duplicate -returnRootsOnly;
+move -relative 0 0 ($carSize);
