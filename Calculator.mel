@@ -1,0 +1,159 @@
+proc Calculator(float $input[], int $operation)
+{
+    if($operation == 0)
+    {
+        for($i = 0;$i<size($input); ++$i)
+        {
+            if($i != 0)
+            {
+                print(" + ");
+            }
+            print($input[$i]);
+        }
+        print(" = ");
+        print(Sum($input)+ "\n");
+    }
+    if($operation == 1)
+    {
+        for($i = 0;$i<size($input); ++$i)
+        {
+            if($i != 0)
+            {
+                print(" - ");
+            }
+            print($input[$i]);
+        }
+        print(" = ");
+        print(Diff($input)+ "\n");
+    }
+    if($operation == 2)
+    {
+        for($i = 0;$i<size($input); ++$i)
+        {
+            if($i != 0)
+            {
+                print(" x ");
+            }
+            print($input[$i]);
+        }
+        print(" = ");
+        print(Mult($input)+ "\n");
+    }
+    if($operation == 3)
+    {
+        for($i = 0;$i<size($input); ++$i)
+        {
+            if($i != 0)
+            {
+                print(" / ");
+            }
+            print($input[$i]);
+        }
+        print(" = ");
+        print(Div($input)+ "\n");
+    }
+    if($operation == 4)
+    {
+        print($input[0] +"^" + $input[0] + " = ");
+        print(Pow($input[0],$input[1])+ "\n");
+    }
+    if($operation == 5)
+    {
+        for($i = 0;$i<size($input); ++$i)
+        {
+            if($i != 0)
+            {
+                print(", ");
+            }
+            print($input[$i]);
+        }
+        print(" averaged = ");
+        print(Mean($input)+ "\n");
+    }
+    if($operation == 6)
+    {
+        for($i = 0;$i<size($input); ++$i)
+        {
+            if($i != 0)
+            {
+                print(", ");
+            }
+            print($input[$i]);
+        }
+        print(" median = ");
+        print(Median($input)+ "\n");
+    }
+}
+
+proc float Sum(float $nums[])
+{
+    float $result = 0;
+    for($i = 0;$i<size($nums); ++$i)
+    {
+       $result += $nums[$i];
+    }
+    return $result;
+}
+
+proc float Diff(float $nums[])
+{
+    float $result = $nums[0];
+    for($i = 1;$i<size($nums); ++$i)
+    {
+       $result -= $nums[$i];
+    }
+    return $result;
+}
+
+proc float Mult(float $nums[])
+{
+    float $result = $nums[0];
+    for($i = 1;$i<size($nums); ++$i)
+    {
+       $result *= $nums[$i];
+    }
+    return $result;
+}
+
+
+proc float Div(float $nums[])
+{
+    float $result = $nums[0];
+    for($i = 1;$i<size($nums); ++$i)
+    {
+       $result /= $nums[$i];
+    }
+    return $result;
+}
+
+proc float Pow(float $base, int $exponent)
+{
+    if ($exponent == 0) return 1;
+    $result = $base;
+    for($i = 1;$i<`abs$exponent`; ++$i)
+    {
+       $result *= $base;
+    }
+    if ($exponent < 0)
+    {
+        return 1/$result;
+    }
+    return $result;
+}
+
+proc float Mean(float $nums[])
+{
+    return Sum($nums)/size($nums);
+}
+
+proc float Median(float $nums[])
+{
+    float $sorted[] = `sort $nums`;
+    int $size = size($sorted);
+    if($size%2 == 0)
+    {
+        float $mid[] = {$sorted[$size/2 - 1],$sorted[($size/2)]};
+        return Mean($mid);
+    }
+    else return $sorted[int(`ceil($size/2)`)];
+}
