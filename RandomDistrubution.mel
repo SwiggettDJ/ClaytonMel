@@ -1,0 +1,58 @@
+global proc RandomDuplicator()
+{
+    string $minFields = `optionVar -q "floatGrpMins"`;
+    string $maxFields = `optionVar -q "floatGrpMaxs"`;
+    string $dupeField = `optionVar -q "intFieldDupes"`;
+
+    float $minX, $maxX, $minY, $maxY, $minZ, $maxZ;
+    $minX = `floatFieldGrp -q -value1 $minFields`;
+    $maxX = `floatFieldGrp -q -value1 $maxFields`;
+    $minY = `floatFieldGrp -q -value2 $minFields`;
+    $maxY = `floatFieldGrp -q -value2 $maxFields`;
+    $minZ = `floatFieldGrp -q -value3 $minFields`;
+    $maxZ = `floatFieldGrp -q -value3 $maxFields`;
+
+    int $duplicates = `intField -q -value $dupeField`;
+    $selection = `ls -sl`;
+    int $amount = size($selection);
+    if ($amount == 0)
+        print("Please select objects to be duplicated \n");
+    else
+    {
+        for($i=0;$i<$duplicates;$i++)
+        {
+            for($j=0;$j<$amount;$j++)
+            {
+                $randX = `rand $minX $maxX`;
+                $randY = `rand $minY $maxY`;
+                $randZ = `rand $minZ $maxZ`;
+                $dupe = `duplicate -returnRootsOnly $selection[$j]`;
+                move $randX $randY $randZ $dupe;
+            }
+        }
+    }
+}
+
+
+global proc RandomDuplicatorUI()
+{
+    string $dupeWindow = "Dupe_ui";
+
+    if(`window -exists $dupeWindow`)
+        deleteUI $dupeWindow;
+
+    $dupeWindow = `window -title "Duplicator"
+                    -widthHeight 500 300
+                    -resizeToFitChildren 1
+                    $dupeWindow`;
+    string $dupeColumn = `columnLayout -parent $dupeWindow -adjustableColumn 1`;
+    optionVar -stringValue "floatGrpMins" `floatFieldGrp -numberOfFields 3 -label "Min XYZ:" -value1 0 -value2 0 -value3 0`;
+    optionVar -stringValue "floatGrpMaxs" `floatFieldGrp -numberOfFields 3 -label "Max XYZ:" -value1 0 -value2 0 -value3 0`;
+
+    optionVar -stringValue "intFieldDupes" `intField -parent $dupeColumn -minValue 1 - value 1`;
+    button -parent $dupeColumn -label ("Duplicate") -command "RandomDuplicator";
+
+    showWindow $dupeWindow;
+}
+
+RandomDuplicatorUI();

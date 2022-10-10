@@ -167,11 +167,11 @@ global proc float Median(float $nums[])
 
 global proc RunCalculator()
 {
-    string $FloatFields = `optionVar -q "textFields"`;
+    string $floatFields = `optionVar -q "textFields"`;
     string $operationField = `optionVar -q "operationField"`;
     string $resultField = `optionVar -q "resultField"`;
 
-    float $floatArray[] = `floatFieldGrp -q -value $FloatFields`;
+    float $floatArray[] = `floatFieldGrp -q -value $floatFields`;
     int $operation = `intField -q -value $operationField`;
     print $operation;
     print $floatArray;
