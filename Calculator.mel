@@ -1,4 +1,4 @@
-proc Calculator(float $input[], int $operation)
+proc float Calculator(float $input[], int $operation)
 {
     if($operation == 0)
     {
@@ -12,6 +12,7 @@ proc Calculator(float $input[], int $operation)
         }
         print(" = ");
         print(Sum($input)+ "\n");
+        return Sum($input);
     }
     if($operation == 1)
     {
@@ -25,6 +26,7 @@ proc Calculator(float $input[], int $operation)
         }
         print(" = ");
         print(Diff($input)+ "\n");
+        return Diff($input);
     }
     if($operation == 2)
     {
@@ -38,6 +40,7 @@ proc Calculator(float $input[], int $operation)
         }
         print(" = ");
         print(Mult($input)+ "\n");
+        return Mult($input);
     }
     if($operation == 3)
     {
@@ -51,11 +54,13 @@ proc Calculator(float $input[], int $operation)
         }
         print(" = ");
         print(Div($input)+ "\n");
+        return Div($input);
     }
     if($operation == 4)
     {
-        print($input[0] +"^" + $input[0] + " = ");
+        print($input[0] +"^" + $input[1] + " = ");
         print(Pow($input[0],$input[1])+ "\n");
+        return Pow($input[0],$input[1]);
     }
     if($operation == 5)
     {
@@ -69,6 +74,7 @@ proc Calculator(float $input[], int $operation)
         }
         print(" averaged = ");
         print(Mean($input)+ "\n");
+        return Mean($input);
     }
     if($operation == 6)
     {
@@ -82,10 +88,11 @@ proc Calculator(float $input[], int $operation)
         }
         print(" median = ");
         print(Median($input)+ "\n");
+        return Median($input);
     }
 }
 
-proc float Sum(float $nums[])
+global proc float Sum(float $nums[])
 {
     float $result = 0;
     for($i = 0;$i<size($nums); ++$i)
@@ -95,7 +102,7 @@ proc float Sum(float $nums[])
     return $result;
 }
 
-proc float Diff(float $nums[])
+global proc float Diff(float $nums[])
 {
     float $result = $nums[0];
     for($i = 1;$i<size($nums); ++$i)
@@ -105,7 +112,7 @@ proc float Diff(float $nums[])
     return $result;
 }
 
-proc float Mult(float $nums[])
+global proc float Mult(float $nums[])
 {
     float $result = $nums[0];
     for($i = 1;$i<size($nums); ++$i)
@@ -116,7 +123,7 @@ proc float Mult(float $nums[])
 }
 
 
-proc float Div(float $nums[])
+global proc float Div(float $nums[])
 {
     float $result = $nums[0];
     for($i = 1;$i<size($nums); ++$i)
@@ -126,7 +133,7 @@ proc float Div(float $nums[])
     return $result;
 }
 
-proc float Pow(float $base, int $exponent)
+global proc float Pow(float $base, int $exponent)
 {
     if ($exponent == 0) return 1;
     $result = $base;
@@ -141,12 +148,12 @@ proc float Pow(float $base, int $exponent)
     return $result;
 }
 
-proc float Mean(float $nums[])
+global proc float Mean(float $nums[])
 {
     return Sum($nums)/size($nums);
 }
 
-proc float Median(float $nums[])
+global proc float Median(float $nums[])
 {
     float $sorted[] = `sort $nums`;
     int $size = size($sorted);
@@ -157,3 +164,40 @@ proc float Median(float $nums[])
     }
     else return $sorted[int(`ceil($size/2)`)];
 }
+
+global proc RunCalculator()
+{
+    string $FloatFields = `optionVar -q "textFields"`;
+    string $operationField = `optionVar -q "operationField"`;
+    string $resultField = `optionVar -q "resultField"`;
+
+    float $floatArray[] = `floatFieldGrp -q -value $FloatFields`;
+    int $operation = `intField -q -value $operationField`;
+    print $operation;
+    print $floatArray;
+    float $result = Calculator($floatArray,$operation);
+    textField -e -text $result $resultField;
+}
+
+
+global proc CalculatorUI()
+{
+    string $calcWindow = "calculator_ui";
+
+    if(`window -exists $calcWindow`)
+        deleteUI $calcWindow;
+
+    $calcWindow = `window -title "Calculator"
+                    -widthHeight 300 500
+                    -resizeToFitChildren 1
+                    $calcWindow`;
+    string $calcColumn = `columnLayout -parent $calcWindow -adjustableColumn 1`;
+    optionVar -stringValue "textFields" `floatFieldGrp -parent $calcColumn -numberOfFields 4`;
+    optionVar -stringValue "operationField" `intField -parent $calcColumn`;
+    button -parent $calcColumn -label "Run" -command "RunCalculator";   
+    optionVar -stringValue "resultField" `textField -parent $calcColumn -placeholderText "Result" -editable 0`;
+
+    showWindow $calcWindow;
+}
+
+CalculatorUI();
