@@ -1,0 +1,8 @@
+$objects = `ls -sl`;
+
+$cluster = `cluster $objects`;
+float $locations[] = `xform -q -pivots $cluster`;
+$locator = `spaceLocator`;
+select $locator;
+move -r -os -ws $locations[0] $locations[1] $locations[2];
+delete $cluster;
